@@ -1,6 +1,9 @@
 const express = require('express');
 const app = express();
+app.use(express.json());
 
+
+// Endpoints
 const users = [{
     id: '1',
     name: 'Pepe'
@@ -19,6 +22,20 @@ app.get('/users/:id', (req, res) => {
     const userId = req.params.id;
     const user = users.find(user => user.id === userId);
     res.json(user);
-})
+});
+
+app.post('/users', (req, res) => {
+    const newUser = req.body;
+    if (!newUser || newUser !== undefined || newUser !== null) {
+        res.status(400).send('Debes pasarme algo en el Body');
+    } else {
+        newUser.id = Math.random();
+        users.push(newUser);
+        res.json(newUser);
+    }
+
+});
+
+
 
 app.listen(3000, () => console.log('Ready on port 3000'));

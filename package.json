@@ -7,6 +7,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node server.js",
     "roll": "node roll-server.js",
+    "dev": "nodemon server.js",
     "dev:roll": "nodemon roll-server.js"
   },
   "keywords": [],
