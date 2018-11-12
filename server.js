@@ -37,12 +37,23 @@ function loadUsers(usersFile) {
     });
 }
 
+// Functions to generate IDs
+function generateMovieId() {
+    let moviesLength = movies.length;
+    return (moviesLength + 1).toString();
+}
+
+function generateUserId() {
+    return (Math.round(Math.random() * 999999 + 111111)).toString();
+}
+
 // Endpoints
+// GET all movies
 app.get('/api/movies', (req, res) => {
     res.json(movies);
 });
 
-
+// GET all users
 app.get("/api/users", (req, res) => {
     // console.log('Request:', req);
     // res.send('Hello World!');
@@ -50,6 +61,7 @@ app.get("/api/users", (req, res) => {
     res.json(users);
 });
 
+// GET a specific movie
 app.get('/api/movies/:query', (req, res) => {
     let query = req.params.query.toLowerCase().replace(/\+/, ' ');
     let [key, value] = query.split('=');
@@ -64,18 +76,7 @@ app.get('/api/movies/:query', (req, res) => {
     }
 });
 
-app.get('/api/movies/:title', (req, res) => {
-    const movieTitle = req.params.title;
-    const movie = movies.find(movie => movie.title === movieTitle);
-    res.json(movie);
-});
-
-app.get("/api/users/:id", (req, res) => {
-    const userId = req.params.id;
-    const user = users.find(user => user.id === userId);
-    res.json(user);
-});
-
+// POST a movie defining title and director
 app.post('/api/movies/add', (req, res) => {
     let {
         title,
@@ -91,18 +92,25 @@ app.post('/api/movies/add', (req, res) => {
     res.json(newMovie);
 });
 
-app.post("/api/users/:username", (req, res) => {
-    const newUser = req.body;
+// POST an user
+app.post("/api/users/add", (req, res) => {
+    let {
+        username,
+        password
+    } = req.body;
     // console.log(newUser);
-    if (!newUser || newUser !== undefined || newUser !== null) {
-        res.status(400).send("Debes pasarme algo en el Body");
-    } else {
-
-        newUser.id = Math.random();
-        newUser.password = Math.random() * 9999 + 1111;
-        users.push(newUser);
-        res.json(newUser);
+    let newUser = {
+        id: generateUserId(),
+        username: username,
+        password: password
     }
+    console.log(newUser);
+    // if (!newUser || newUser !== undefined || newUser !== null) {
+    //     res.status(400).send("Debes pasarme algo en el Body");
+    // } else {
+    users.push(newUser);
+    res.json(newUser);
+    // }
 });
 
 app.listen(3000, () => {
@@ -110,8 +118,3 @@ app.listen(3000, () => {
     users = loadUsers(usersPath).then(() => console.log(`Users file has been read.`));
     console.log("Ready on port 3000");
 });
-
-function generateMovieId() {
-    let moviesLength = movies.length;
-    return moviesLength + 1;
-}
