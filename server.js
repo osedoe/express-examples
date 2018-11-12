@@ -49,17 +49,10 @@ function generateUserId() {
 
 // Endpoints
 // GET all movies
-app.get('/api/movies', (req, res) => {
-    res.json(movies);
-});
+app.get('/api/movies', (req, res) => res.json(movies));
 
 // GET all users
-app.get("/api/users", (req, res) => {
-    // console.log('Request:', req);
-    // res.send('Hello World!');
-    console.log(req);
-    res.json(users);
-});
+app.get("/api/users", (req, res) => res.json(users));
 
 // GET a specific movie
 app.get('/api/movies/:query', (req, res) => {
@@ -126,11 +119,21 @@ app.put('/api/movies/update/:id', (req, res) => {
 // Add likes through PUT
 app.put('/api/movies/like/:id', (req, res) => {
     let movieId = req.params.id;
-    let movieToUpdate = movies.filter(movie => {
+    let movieToAddLike = movies.filter(movie => {
         return movie.id == movieId;
     });
-    movieToUpdate[0].likes++;
-    res.json(movieToUpdate[0]);
+    movieToAddLike[0].likes++;
+    res.json(movieToAddLike[0]);
+});
+
+// Delete movie
+app.delete('/api/movies/delete/:id', (req, res) => {
+    let movieId = req.params.id;
+    let movieToRemove = movies.filter(movie => {
+        return movie.id == movieId;
+    });
+    movies.slice(movieId, 1);
+
 
 });
 
