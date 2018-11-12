@@ -104,7 +104,6 @@ app.post("/api/users/add", (req, res) => {
         username: username,
         password: password
     }
-    console.log(newUser);
     // if (!newUser || newUser !== undefined || newUser !== null) {
     //     res.status(400).send("Debes pasarme algo en el Body");
     // } else {
@@ -113,6 +112,20 @@ app.post("/api/users/add", (req, res) => {
     // }
 });
 
+// Update movie with PUT
+app.put('/api/movies/update/:id', (req, res) => {
+    const movieId = req.params.id;
+    let movieToUpdate = movies.filter(movie => {
+        return movie.id == movieId;
+    });
+    console.log(movieToUpdate);
+    movieToUpdate[0].title = req.body.title;
+    movieToUpdate[0].director = req.body.director;
+    console.log(movieToUpdate[0]);
+    res.json(movieToUpdate[0]);
+});
+
+// Listen
 app.listen(3000, () => {
     movies = loadMovies(moviesPath).then(() => console.log(`Movies file has been read.`));
     users = loadUsers(usersPath).then(() => console.log(`Users file has been read.`));
