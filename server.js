@@ -76,12 +76,28 @@ app.get("/api/users/:id", (req, res) => {
     res.json(user);
 });
 
+app.post('/api/movies/add', (req, res) => {
+    let {
+        title,
+        director
+    } = req.body;
+    let newMovie = {
+        id: generateMovieId(),
+        title: title,
+        director: director,
+        likes: 0
+    }
+    movies.push(newMovie);
+    res.json(newMovie);
+});
+
 app.post("/api/users/:username", (req, res) => {
     const newUser = req.body;
     // console.log(newUser);
     if (!newUser || newUser !== undefined || newUser !== null) {
         res.status(400).send("Debes pasarme algo en el Body");
     } else {
+
         newUser.id = Math.random();
         newUser.password = Math.random() * 9999 + 1111;
         users.push(newUser);
@@ -94,3 +110,8 @@ app.listen(3000, () => {
     users = loadUsers(usersPath).then(() => console.log(`Users file has been read.`));
     console.log("Ready on port 3000");
 });
+
+function generateMovieId() {
+    let moviesLength = movies.length;
+    return moviesLength + 1;
+}
