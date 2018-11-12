@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 const express = require("express");
 const fs = require('fs');
 const app = express();
@@ -129,12 +130,12 @@ app.put('/api/movies/like/:id', (req, res) => {
 // Delete movie
 app.delete('/api/movies/delete/:id', (req, res) => {
     let movieId = req.params.id;
-    let movieToRemove = movies.filter(movie => {
-        return movie.id == movieId;
-    });
-    movies.slice(movieId, 1);
-
-
+    // let movieToRemove = movies.filter(movie => {
+    //     return movie.id == movieId;
+    // });
+    console.log(movieId);
+    movies.splice(movieId - 1, 1);
+    res.json(movies);
 });
 
 // Listen
