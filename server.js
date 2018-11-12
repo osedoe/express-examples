@@ -118,11 +118,20 @@ app.put('/api/movies/update/:id', (req, res) => {
     let movieToUpdate = movies.filter(movie => {
         return movie.id == movieId;
     });
-    console.log(movieToUpdate);
     movieToUpdate[0].title = req.body.title;
     movieToUpdate[0].director = req.body.director;
-    console.log(movieToUpdate[0]);
     res.json(movieToUpdate[0]);
+});
+
+// Add likes through PUT
+app.put('/api/movies/like/:id', (req, res) => {
+    let movieId = req.params.id;
+    let movieToUpdate = movies.filter(movie => {
+        return movie.id == movieId;
+    });
+    movieToUpdate[0].likes++;
+    res.json(movieToUpdate[0]);
+
 });
 
 // Listen
